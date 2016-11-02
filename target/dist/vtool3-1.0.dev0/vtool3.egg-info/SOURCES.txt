@@ -1,0 +1,17 @@
+setup.py
+scripts/g2v
+scripts/poscar
+scripts/v2g
+scripts/vfreq
+scripts/vscan
+vtool3/__init__.py
+vtool3/gaussian.py
+vtool3/infra.py
+vtool3/util.py
+vtool3/vasp.py
+vtool3.egg-info/PKG-INFO
+vtool3.egg-info/SOURCES.txt
+vtool3.egg-info/dependency_links.txt
+vtool3.egg-info/requires.txt
+vtool3.egg-info/top_level.txt
+vtool3.egg-info/zip-safe

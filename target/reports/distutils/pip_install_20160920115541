@@ -1,0 +1,9 @@
+Processing ./target/dist/vtool3-1.0.dev0
+Requirement already satisfied (use --upgrade to upgrade): docopt in /root/venv/lib/python3.5/site-packages (from vtool3==1.1)
+Building wheels for collected packages: vtool3
+  Running setup.py bdist_wheel for vtool3: started
+  Running setup.py bdist_wheel for vtool3: finished with status 'done'
+  Stored in directory: /root/.cache/pip/wheels/f8/b4/16/3f6f9dcfb993077fe1a3846b4e58c6d475ae23b157a6708ff9
+Successfully built vtool3
+Installing collected packages: vtool3
+Successfully installed vtool3-1.1

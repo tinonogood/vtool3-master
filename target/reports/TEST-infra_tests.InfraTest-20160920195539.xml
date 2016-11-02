@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" name="infra_tests.InfraTest-20160920195539" skipped="0" tests="5" time="0.001">
+	<testcase classname="infra_tests.InfraTest" name="test_atom" time="0.000"/>
+	<testcase classname="infra_tests.InfraTest" name="test_check_element_by_periodic_table" time="0.000"/>
+	<testcase classname="infra_tests.InfraTest" name="test_element" time="0.000"/>
+	<testcase classname="infra_tests.InfraTest" name="test_lattice_init" time="0.000"/>
+	<testcase classname="infra_tests.InfraTest" name="test_vector" time="0.000"/>
+	<system-out>
+<![CDATA[]]>	</system-out>
+	<system-err>
+<![CDATA[]]>	</system-err>
+</testsuite>

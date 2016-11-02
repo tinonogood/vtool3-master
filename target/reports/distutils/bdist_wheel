@@ -1,0 +1,61 @@
+running clean
+'build/lib' does not exist -- can't clean it
+'build/bdist.linux-x86_64' does not exist -- can't clean it
+'build/scripts-3.5' does not exist -- can't clean it
+running bdist_wheel
+running build
+running build_py
+creating build
+creating build/lib
+creating build/lib/vtool3
+copying vtool3/util.py -> build/lib/vtool3
+copying vtool3/gaussian.py -> build/lib/vtool3
+copying vtool3/infra.py -> build/lib/vtool3
+copying vtool3/__init__.py -> build/lib/vtool3
+copying vtool3/vasp.py -> build/lib/vtool3
+running build_scripts
+creating build/scripts-3.5
+copying and adjusting scripts/vfreq -> build/scripts-3.5
+copying and adjusting scripts/vscan -> build/scripts-3.5
+copying and adjusting scripts/g2v -> build/scripts-3.5
+copying and adjusting scripts/poscar -> build/scripts-3.5
+copying and adjusting scripts/v2g -> build/scripts-3.5
+changing mode of build/scripts-3.5/vfreq from 644 to 755
+changing mode of build/scripts-3.5/vscan from 644 to 755
+changing mode of build/scripts-3.5/g2v from 644 to 755
+changing mode of build/scripts-3.5/poscar from 644 to 755
+changing mode of build/scripts-3.5/v2g from 644 to 755
+installing to build/bdist.linux-x86_64/wheel
+running install
+running install_lib
+creating build/bdist.linux-x86_64
+creating build/bdist.linux-x86_64/wheel
+creating build/bdist.linux-x86_64/wheel/vtool3
+copying build/lib/vtool3/util.py -> build/bdist.linux-x86_64/wheel/vtool3
+copying build/lib/vtool3/gaussian.py -> build/bdist.linux-x86_64/wheel/vtool3
+copying build/lib/vtool3/infra.py -> build/bdist.linux-x86_64/wheel/vtool3
+copying build/lib/vtool3/__init__.py -> build/bdist.linux-x86_64/wheel/vtool3
+copying build/lib/vtool3/vasp.py -> build/bdist.linux-x86_64/wheel/vtool3
+running install_egg_info
+running egg_info
+writing dependency_links to vtool3.egg-info/dependency_links.txt
+writing vtool3.egg-info/PKG-INFO
+writing top-level names to vtool3.egg-info/top_level.txt
+writing requirements to vtool3.egg-info/requires.txt
+reading manifest file 'vtool3.egg-info/SOURCES.txt'
+writing manifest file 'vtool3.egg-info/SOURCES.txt'
+Copying vtool3.egg-info to build/bdist.linux-x86_64/wheel/vtool3-1.1-py3.5.egg-info
+running install_scripts
+creating build/bdist.linux-x86_64/wheel/vtool3-1.1.data
+creating build/bdist.linux-x86_64/wheel/vtool3-1.1.data/scripts
+copying build/scripts-3.5/vfreq -> build/bdist.linux-x86_64/wheel/vtool3-1.1.data/scripts
+copying build/scripts-3.5/vscan -> build/bdist.linux-x86_64/wheel/vtool3-1.1.data/scripts
+copying build/scripts-3.5/g2v -> build/bdist.linux-x86_64/wheel/vtool3-1.1.data/scripts
+copying build/scripts-3.5/poscar -> build/bdist.linux-x86_64/wheel/vtool3-1.1.data/scripts
+copying build/scripts-3.5/v2g -> build/bdist.linux-x86_64/wheel/vtool3-1.1.data/scripts
+changing mode of build/bdist.linux-x86_64/wheel/vtool3-1.1.data/scripts/vfreq to 755
+changing mode of build/bdist.linux-x86_64/wheel/vtool3-1.1.data/scripts/vscan to 755
+changing mode of build/bdist.linux-x86_64/wheel/vtool3-1.1.data/scripts/g2v to 755
+changing mode of build/bdist.linux-x86_64/wheel/vtool3-1.1.data/scripts/poscar to 755
+changing mode of build/bdist.linux-x86_64/wheel/vtool3-1.1.data/scripts/v2g to 755
+creating build/bdist.linux-x86_64/wheel/vtool3-1.1.dist-info/WHEEL

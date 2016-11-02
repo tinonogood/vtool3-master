@@ -1,0 +1,47 @@
+running clean
+'build/lib' does not exist -- can't clean it
+'build/bdist.linux-x86_64' does not exist -- can't clean it
+'build/scripts-3.5' does not exist -- can't clean it
+running sdist
+running egg_info
+creating vtool3.egg-info
+writing requirements to vtool3.egg-info/requires.txt
+writing dependency_links to vtool3.egg-info/dependency_links.txt
+writing vtool3.egg-info/PKG-INFO
+writing top-level names to vtool3.egg-info/top_level.txt
+writing manifest file 'vtool3.egg-info/SOURCES.txt'
+reading manifest file 'vtool3.egg-info/SOURCES.txt'
+writing manifest file 'vtool3.egg-info/SOURCES.txt'
+warning: sdist: standard file not found: should have one of README, README.rst, README.txt
+
+running check
+warning: check: missing required meta-data: url
+
+warning: check: missing meta-data: either (author and author_email) or (maintainer and maintainer_email) must be supplied
+
+creating vtool3-1.1
+creating vtool3-1.1/scripts
+creating vtool3-1.1/vtool3
+creating vtool3-1.1/vtool3.egg-info
+copying files to vtool3-1.1...
+copying setup.py -> vtool3-1.1
+copying scripts/g2v -> vtool3-1.1/scripts
+copying scripts/poscar -> vtool3-1.1/scripts
+copying scripts/v2g -> vtool3-1.1/scripts
+copying scripts/vfreq -> vtool3-1.1/scripts
+copying scripts/vscan -> vtool3-1.1/scripts
+copying vtool3/__init__.py -> vtool3-1.1/vtool3
+copying vtool3/gaussian.py -> vtool3-1.1/vtool3
+copying vtool3/infra.py -> vtool3-1.1/vtool3
+copying vtool3/util.py -> vtool3-1.1/vtool3
+copying vtool3/vasp.py -> vtool3-1.1/vtool3
+copying vtool3.egg-info/PKG-INFO -> vtool3-1.1/vtool3.egg-info
+copying vtool3.egg-info/SOURCES.txt -> vtool3-1.1/vtool3.egg-info
+copying vtool3.egg-info/dependency_links.txt -> vtool3-1.1/vtool3.egg-info
+copying vtool3.egg-info/requires.txt -> vtool3-1.1/vtool3.egg-info
+copying vtool3.egg-info/top_level.txt -> vtool3-1.1/vtool3.egg-info
+copying vtool3.egg-info/zip-safe -> vtool3-1.1/vtool3.egg-info
+Writing vtool3-1.1/setup.cfg
+creating dist
+Creating tar archive
+removing 'vtool3-1.1' (and everything under it)
