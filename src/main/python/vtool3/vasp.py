@@ -6,7 +6,7 @@ import re
 from vtool3.infra import *
 
 __author__ = ""
-__date__ = "2016/09/05"
+__date__ = "2016/10/22"
 __version__ = "$Revision: 0.3$"
 
 
@@ -58,8 +58,8 @@ class POSCAR(object):
     def get_coordinate_type(self):
         return self.__coordinate_type
 
-    def set_coordinate_type(self, coordinate):
-        self.__coordinate_type = coordinate
+    def set_coordinate_type(self, coordinate_type):
+        self.__coordinate_type = coordinate_type
 
     coordinate_type = property(get_coordinate_type, set_coordinate_type, 'coordinate type property')
 
@@ -75,14 +75,13 @@ class POSCAR(object):
         pass
 
     def set_atom_element(self, index, element_symbol):
-#        self.__atoms[index].setElement(element)
         self.__atoms[index].symbol = element_symbol
 
     def set_atom_coordinate(self, index, x_coordinate, y_coordinate, z_coordinate):
-        self.__atoms[index].coordinate = x_coordinate, y_coordinate, z_coordinate
+        self.__atoms[index].set_coordinate(x_coordinate, y_coordinate, z_coordinate)
 
     def set_atom_dynamic(self, index, x_dynamic, y_dynamic, z_dynamic):
-        self.__atoms[index].dynamic = x_dynamic, y_dynamic, z_dynamic
+        self.__atoms[index].set_dynamic(x_dynamic, y_dynamic, z_dynamic)
 
     def set_atom(self, index, atom):
         self.__atoms[index] = atom
@@ -228,7 +227,7 @@ class POSCAR(object):
         if filename is None:
             print(output1 + output2 + output3)
         else:
-            f = open(filename, 'wb')
+            f = open(filename, 'w')
             f.write(output1 + output2 + output3)
             f.close()
 #        self.listAtom()
@@ -259,7 +258,7 @@ class POSCAR(object):
             x, y, z = v.basis
 
             for j in tmp_indexes:
-                tmp_x, tmp_y, tmp_z = self.__atoms[j].getCoordinate()
+                tmp_x, tmp_y, tmp_z = self.__atoms[j].coordinate
                 tmp_poscar.set_atom_coordinate(j, tmp_x + x, tmp_y + y, tmp_z + z)
             poscars.append(tmp_poscar)
         return poscars
@@ -273,9 +272,9 @@ class POSCAR(object):
             group atom index:      {int array}
         """
     # ref atm, fix/basic atm, mot atm
-        ref_atm = self.__atoms[ref_indexes[0] ]
-        bas_atm = self.__atoms[ref_indexes[1] ]
-        mot_atm = self.__atoms[mot_indexes[0] ]
+        ref_atm = self.__atoms[ref_indexes[0]]
+        bas_atm = self.__atoms[ref_indexes[1]]
+        mot_atm = self.__atoms[mot_indexes[0]]
     
         x1, y1, z1 = ref_atm.coordinate
         x2, y2, z2 = bas_atm.coordinate
@@ -297,7 +296,7 @@ class POSCAR(object):
                 tmp_x, tmp_y, tmp_z = self.__atoms[j].coordinate
                 tmp_v = Vector(tmp_x - x2, tmp_y - y2, tmp_z - z2)
                 tmp_v = tmp_v.rotate(normal_vector, a)
-                tmp_x, tmp_y, tmp_z = tmp_v.getBasis()
+                tmp_x, tmp_y, tmp_z = tmp_v.basis
                 tmp_poscar.set_atom_coordinate(j, tmp_x + x2, tmp_y + y2, tmp_z + z2)
             poscars.append(tmp_poscar)
         return poscars
@@ -311,15 +310,15 @@ class POSCAR(object):
             group atom index:      {int array}
         """
     # ref atm, fix/basic atm, mot atm
-        ref1_atm = self.__atoms[ref_indexes[0] ]
-        ref2_atm = self.__atoms[ref_indexes[1] ]
-        ref3_atm = self.__atoms[ref_indexes[2] ]
-        mot_atm  = self.__atoms[mot_indexes[0] ]
+        ref1_atm = self.__atoms[ref_indexes[0]]
+        ref2_atm = self.__atoms[ref_indexes[1]]
+        ref3_atm = self.__atoms[ref_indexes[2]]
+        mot_atm  = self.__atoms[mot_indexes[0]]
     
-        x1, y1, z1 = ref1_atm.getCoordinate()
-        x2, y2, z2 = ref2_atm.getCoordinate()
-        x3, y3, z3 = ref3_atm.getCoordinate()
-        x4, y4, z4 = mot_atm.getCoordinate()
+        x1, y1, z1 = ref1_atm.coordinate
+        x2, y2, z2 = ref2_atm.coordinate
+        x3, y3, z3 = ref3_atm.coordinate
+        x4, y4, z4 = mot_atm.coordinate
     
         vec1 = Vector(x1 - x2, y1 - y2, z1 - z2)
         vec2 = Vector(x3 - x2, y3 - y2, z3 - z2)
@@ -340,10 +339,10 @@ class POSCAR(object):
             tmp_poscar.__atoms = copy.deepcopy(self.__atoms)
     
             for j in tmp_indexes:
-                tmp_x, tmp_y, tmp_z = self.__atoms[j].getCoordinate()
+                tmp_x, tmp_y, tmp_z = self.__atoms[j].coordinate
                 tmp_v = Vector(tmp_x - x3, tmp_y - y3, tmp_z - z3)
                 tmp_v = tmp_v.rotate(normal_vec3, a)
-                tmp_x, tmp_y, tmp_z = tmp_v.getBasis()
+                tmp_x, tmp_y, tmp_z = tmp_v.basis
                 tmp_poscar.set_atom_coordinate(j, tmp_x + x3, tmp_y + y3, tmp_z + z3)
             poscars.append(tmp_poscar)
         return poscars
@@ -395,16 +394,16 @@ class POSCAR(object):
             v2 = l[1]
             v3 = l[2]
             alpha = v2.angle(v3)
-            beta  = v1.angle(v3)
+            beta = v1.angle(v3)
             gamma = v1.angle(v2)
             v1_len = v1.length()
             v2_len = v2.length()
             v3_len = v3.length()
             cos_alpha = math.cos(math.radians(alpha))
-            cos_beta  = math.cos(math.radians(beta))
+            cos_beta = math.cos(math.radians(beta))
             cos_gamma = math.cos(math.radians(gamma))
             sin_alpha = math.sin(math.radians(alpha))
-            sin_beta  = math.sin(math.radians(beta))
+            sin_beta = math.sin(math.radians(beta))
             sin_gamma = math.sin(math.radians(gamma))
             volume = math.sqrt(1 - cos_alpha * cos_alpha - cos_beta * cos_beta - cos_gamma * cos_gamma + 2 * cos_alpha * cos_beta * cos_gamma)
 
@@ -416,50 +415,93 @@ class POSCAR(object):
                 a.set_coordinate(tmp_x, tmp_y, tmp_z)
             
 
-class OUTCAR:
+class OUTCAR(object):
     def __init__(self, filename='OUTCAR'):
         self.__elements = []
+        self.__lattices = []
         self.__dynamic_matrixes = []
         self.read_outcar(filename)
 
     def read_outcar(self, filename):
         f = open(filename)
         l = ' '
+        # global reg pattern
         re_space = re.compile('^\s+?$')
-#        re_space = re.compile('^\s+?$')
+        re_division_line = re.compile('--------------------------------------------------------------------------------------------------------')
+
+        # INCAR section pattern
+        re_incar = re.compile('^\s+?INCAR:')
         re_potcar = re.compile('^\s+?POTCAR:\s+?(\w+)\s+?(\w+)\s+?(\w+)')
-#        re_position = re.compile(' position of ions in cartesian coordinates  (Angst):')
+        re_title = re.compile('^\s+?TITEL\s+?=\s+?(\w+)\s+?(\w+)\s+?(\w+)')
+
+        # finite differences section pattern
+        re_finite_differences = re.compile('^\s+?finite differences')
+        re_direct_lattice_vectors_reciprocal_lattice_vertors = re.compile('^\s+?direct\s+?lattice\s+?vectors\s+?reciprocal\s+?lattice\s+?vectors')
+
+        # ios position section pattern
+        re_ion_position = re.compile('^\s+?ion  position')
+        re_lattice_vectors = re.compile('^\s+?Lattice vectors:')
+        re_vector_form = re.compile('\s+?(\w+) = \(\s+?(-?(\d+)\.(\d+)),\s+?(-?(\d+)\.(\d+)),\s+?(-?(\d+)\.(\d+))\)')
+
+        # Dimension of arrays section pattern
+        re_ions_per_type = re.compile('^\s+?ions per type =')
+
         re_position = re.compile('^\s+?position of ions in cartesian coordinates')
-#        re_position2 = re.compile('^\s+?(\w+)\s+?(\w+)\s+?(\w+)')
         re_dyn_mat = re.compile('Eigenvectors and eigenvalues of the dynamical matrix')
         re_finite = re.compile('Finite differences POTIM')
 
         total_atom_number = 0
+        tmp_elements = []
         while l:
             l = f.readline()
+
             # Get potcar
-            if re_potcar.search(l):
-                r = re_potcar.match(l)
+            if re_title.search(l):
+                r = re_title.match(l)
                 e1, e2, e3 = r.groups()
                 element = {'potential': e1, 'element': e2, 'date': e3}
                 self.__elements.append(element)
 
-            # Get atom position
-            if re_position.match(l):
+            #  finite differences section
+            if re_finite_differences.search(l):
                 l = f.readline()
-                while not re_space.search(l):
+                tmp_flag = False
+                while not (tmp_flag and re_division_line.search(l) ):
+                    if re_division_line.search(l):
+                        tmp_flag = True
+                    if re_direct_lattice_vectors_reciprocal_lattice_vertors.search(l):
+                        l = f.readline()
+                        tmp_array = l.split()
+                        tmp_vector1 = Vector(float(tmp_array[0]), float(tmp_array[1]), float(tmp_array[2]))
+
+                        l = f.readline()
+                        tmp_array = l.split()
+                        tmp_vector2 = Vector(float(tmp_array[0]), float(tmp_array[1]), float(tmp_array[2]))
+
+                        l = f.readline()
+                        tmp_array = l.split()
+                        tmp_vector3 = Vector(float(tmp_array[0]), float(tmp_array[1]), float(tmp_array[2]) )
+
+                        self.__lattices.append(Lattice(tmp_vector1, tmp_vector2, tmp_vector3) )
                     l = f.readline()
-                    total_atom_number += 1
-                    
+
+            # Get atom type number
+            if re_ions_per_type.search(l):
+                 tmp_array = l.split()
+                 for i in range(len(tmp_array) - 4):
+                     self.__elements[i]['number'] = int(tmp_array[i + 4])
+                     for j in range(int(tmp_array[i+4])):
+                         tmp_elements.append(self.__elements[i]['element'])
 
             # Get dynamical matrix
             if re_dyn_mat.search(l):
                 l = f.readline()
-#                while not re_dyn_mat.search(l):
+
                 while not (re_dyn_mat.search(l) or re_finite.search(l) ):
                     tmp_array = l.split()
                     # Get image freq
                     if len(tmp_array) == 10:
+                        i = 0
                         freq = {"THz": float(tmp_array[2]) * -1.0,
                                 "2PiTHz": float(tmp_array[4]) * 1.0,
                                 "cm-1": float(tmp_array[6]) * -1.0,
@@ -473,16 +515,19 @@ class OUTCAR:
                                 l = f.readline()
                                 tmp_array = l.split()
                             else:
-                                tmp_atom = Atom(element_symbol = 'X',
-                                              x_coordinate = float(tmp_array[0]), y_coordinate = float(tmp_array[1]), z_coordinate = float(tmp_array[2]),
-                                              x_displace = float(tmp_array[3]), y_displace = float(tmp_array[4]), z_displace = float(tmp_array[3]) )
+                                tmp_atom = Atom(element_symbol= tmp_elements[i],
+                                                x_coordinate = float(tmp_array[0]), y_coordinate = float(tmp_array[1]), z_coordinate = float(tmp_array[2]),
+                                                x_displace = float(tmp_array[3]), y_displace = float(tmp_array[4]), z_displace = float(tmp_array[3]) )
                                 l = f.readline()
                                 tmp_array = l.split()
+                                check_element_by_periodic_table(tmp_atom)
                                 atoms.append(tmp_atom)
+                                i += 1
                         self.__dynamic_matrixes.append({"freq": freq, "atoms": atoms})
 
                     # Get real freq
                     elif len(tmp_array) == 11:
+                        i = 0
                         freq = {"THz": float(tmp_array[3]),
                                 "2PiTHz": float(tmp_array[5]),
                                 "cm-1": float(tmp_array[7]),
@@ -496,24 +541,96 @@ class OUTCAR:
                                 l = f.readline()
                                 tmp_array = l.split()
                             else:
-                                tmp_atom = Atom(element_symbol = 'X',
-                                              x_coordinate = float(tmp_array[0]), y_coordinate = float(tmp_array[1]), z_coordinate = float(tmp_array[2]),
-                                              x_displace = float(tmp_array[3]), y_displace = float(tmp_array[4]), z_displace = float(tmp_array[3]) )
+                                tmp_atom = Atom(element_symbol = tmp_elements[i],
+                                                x_coordinate = float(tmp_array[0]), y_coordinate = float(tmp_array[1]), z_coordinate = float(tmp_array[2]),
+                                                x_displace = float(tmp_array[3]), y_displace = float(tmp_array[4]), z_displace = float(tmp_array[3]) )
                                 l = f.readline()
                                 tmp_array = l.split()
+                                check_element_by_periodic_table(tmp_atom)
                                 atoms.append(tmp_atom)
+                                i += 1
                         self.__dynamic_matrixes.append({"freq": freq, "atoms": atoms})
  
                     l = f.readline()
                 
         f.close()
+        self.__dynamic_matrixes.reverse()
 
     def write_log(self, filename=None):
-        out0orientation = """                         Standard orientation:
+        out0orientation = """GradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGrad
+ Number of steps in this run=   2 maximum allowed number of steps=   2.
+ GradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGrad
+                          Standard orientation:
  ---------------------------------------------------------------------
  Center     Atomic     Atomic              Coordinates (Angstroms)
  Number     Number      Type              X           Y           Z
  ---------------------------------------------------------------------\n"""
+        out4orientation = """
+  ***** Axes restored to original set *****
+  -------------------------------------------------------------------
+  Center     Atomic                   Forces (Hartrees/Bohr)
+  Number     Number              X              Y              Z
+  -------------------------------------------------------------------
+          25          25
+          26          25
+          27          25
+          28          25
+          29          25
+          30          25
+          31          25
+          32          25
+          33          25
+          34          25
+          35          25
+          36          25
+          37          25
+          38           8
+          39           8
+          40           8
+          41           8
+          42           8
+          43           8
+          44           8
+          45           8
+          46           8
+          47           8
+          48           8
+          49           8
+          50           8
+          51           8
+          52           8
+          53           8
+          54           8
+          55           8
+          56           8
+          57           8
+          58           8
+          59           8
+          60           8
+          61           8
+          62           8
+          63           8
+          64           8
+          65           8
+          66           8
+          67           8
+          68           8
+          69           8
+          70           8
+          71           8
+          72           8
+          73           8
+          74           8
+          75           8
+          76           8
+          77           8
+          78           8
+          79           8
+          80           8
+  -------------------------------------------------------------------
+ GradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGrad
+ Step number   1 out of a maximum of   2
+ GradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGrad"""
         out0coordinate = '     %3d       %3d        %3d       %10.6f   %10.6f %10.6f\n'
         out0dash = '---------------------------------------------------------------------\n'
         out0frequency = """ Harmonic frequencies (cm**-1), IR intensities (KM/Mole), Raman scattering
@@ -535,24 +652,30 @@ class OUTCAR:
         sentances = [{'orientation': out0orientation, 'coordinates': out0coordinate, 'dash': out0dash, 'frequency': out0frequency},
                      {'number': out1number, 'frequency': out1frequency, 'title': out1title, 'col': out1col},
                      {'number': out2number, 'frequency': out2frequency, 'title': out2title, 'col': out2col},
-                     {'number': out3number, 'frequency': out3frequency, 'title': out3title, 'col': out3col},]
+                     {'number': out3number, 'frequency': out3frequency, 'title': out3title, 'col': out3col},
+                     {'orientation': out4orientation},]
 
-        numberOfFreq = len(self.__dynamic_matrixes)
-        quotient = numberOfFreq / 3
-        remainder = numberOfFreq % 3
+        number_of_freq = len(self.__dynamic_matrixes)
+        quotient = number_of_freq // 3
+        remainder = number_of_freq % 3
         number_of_atoms = len(self.__dynamic_matrixes[0]['atoms'])
-#        print numberOfFreq, quotient, remainder
         out = sentances[0]['orientation']
 
         for i in range(number_of_atoms):
             x, y, z = self.__dynamic_matrixes[0]['atoms'][i].coordinate
-            out += sentances[0]['coordinates'] %(i+1, 1, 0, x, y, z)
+            atomic_number = self.__dynamic_matrixes[0]['atoms'][i].atomic_number
+            out += sentances[0]['coordinates'] %(i + 1, atomic_number, 0, x, y, z)
+
+        for i in range(3):
+            x, y, z = self.__lattices[0].vectors[i].basis
+            out += sentances[0]['coordinates'] %(number_of_atoms + i + 1, -2, 0, x, y, z)
+
         out += sentances[0]['dash']
  
         out += sentances[0]['frequency']
-        for i in range(quotient):
-            out += sentances[3]['number'] %(3*i+1, 3*i+2, 3*i+3)
-            out += sentances[3]['frequency'] %(self.__dynamic_matrixes[3*i-3]['freq']['cm-1'], self.__dynamic_matrixes[3*i-2]['freq']['cm-1'], self.__dynamic_matrixes[3*i-1]['freq']['cm-1'])
+        for i in range(1, quotient + 1):
+            out += sentances[3]['number'] %(3 * i - 2, 3 * i - 1, 3 * i)
+            out += sentances[3]['frequency'] %(self.__dynamic_matrixes[3*i-3]['freq']['cm-1'], self.__dynamic_matrixes[3 * i - 2]['freq']['cm-1'], self.__dynamic_matrixes[3 * i - 1]['freq']['cm-1'])
             out += sentances[3]['title']
             for j in range(number_of_atoms):
                 a11, a12, a13 = self.__dynamic_matrixes[3*i-3]['atoms'][j].displace
@@ -561,36 +684,33 @@ class OUTCAR:
                 out += sentances[3]['col'] %(j+1, 1, a11, a12, a13, a21, a22, a23, a31, a32, a33)
 
         if remainder == 1:
-            out += sentances[1]['number'] %(numberOfFreq)
-            out += sentances[1]['frequency'] %(self.__dynamic_matrixes[numberOfFreq-1]['freq']['cm-1'])
+            out += sentances[1]['number'] %(number_of_freq)
+            out += sentances[1]['frequency'] %(self.__dynamic_matrixes[number_of_freq - 1]['freq']['cm-1'])
             out += sentances[1]['title']
             for j in range(number_of_atoms):
-                a11, a12, a13 = self.__dynamic_matrixes[numberOfFreq-1]['atoms'][j].getDisplace()
+                a11, a12, a13 = self.__dynamic_matrixes[number_of_freq-1]['atoms'][j].displace
                 out += sentances[1]['col'] %(j+1, 1, a11, a12, a13)
         elif remainder == 2:
-            out += sentances[2]['number'] %(numberOfFreq-1, numberOfFreq)
-            out += sentances[2]['frequency'] %(self.__dynamic_matrixes[numberOfFreq-2]['freq']['cm-1'], self.__dynamic_matrixes[numberOfFreq-2]['freq']['cm-1'])
+            out += sentances[2]['number'] %(number_of_freq-1, number_of_freq)
+            out += sentances[2]['frequency'] %(self.__dynamic_matrixes[number_of_freq - 2]['freq']['cm-1'], self.__dynamic_matrixes[number_of_freq - 2]['freq']['cm-1'])
             out = out + sentances[2]['title']
             for j in range(number_of_atoms):
-                a11, a12, a13 = self.__dynamic_matrixes[numberOfFreq-2]['atoms'][j].displace
-                a21, a22, a23 = self.__dynamic_matrixes[numberOfFreq-1]['atoms'][j].displace
+                a11, a12, a13 = self.__dynamic_matrixes[number_of_freq - 2]['atoms'][j].displace
+                a21, a22, a23 = self.__dynamic_matrixes[number_of_freq - 1]['atoms'][j].displace
                 out += sentances[2]['col'] %(j+1, 1, a11, a12, a13, a21, a22, a23)
-#        out += '  -------------------------------------------------------------------'
+
+        out += sentances[4]['orientation']
+
         # setup output
         if filename is None:
             print(out)
         else:
-            f = open(filename, 'wb')
+            f = open(filename, 'w')
             f.write(out)
             f.close()
-#    
 
 
 if __name__ == "__main__":
-    #    o = OUTCAR('OUTCAR')
-#    o.writeLog()
-
-#    p = POSCAR('POSCAR5C')
     p = POSCAR('c1')
     p.cartesian_to_direct()
     p.write_poscar('d1')
@@ -598,5 +718,3 @@ if __name__ == "__main__":
     p = POSCAR('d1')
     p.direct_to_cartesian()
     p.write_poscar('c2')
-
-    pass
